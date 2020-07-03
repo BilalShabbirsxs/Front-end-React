@@ -7,14 +7,26 @@ export default class ClassInput extends Component{
         subject: '',
         };
 
-    
+    componentDidMount(){
+        axios.get('http://localhost:4000/classes/'+this.props.match.params.id)
+        .then(res=>
+            this.setState({
+                title: res.data.title,
+                subject: res.data.subject 
+            })
+        )
+    }
+
     handleChange = event => {
+        
         const { name, value } = event.target;
 
         this.setState({
             [name] : value
         });
     }
+
+    
 
     handleSubmit=event=>{
         event.preventDefault();
@@ -37,14 +49,15 @@ export default class ClassInput extends Component{
 
     render(){
     return (
+        <div className="container">
      <form onSubmit={e=> this.handleSubmit(e)}>
          <label>ClassName:</label>
-             <input  type="text" name="title" onChange={this.handleChange} />
+             <input value={this.state.title} type="text" name="title" onChange={this.handleChange} />
          <label>Subject:</label>
-             <input type="text" name="subject" onChange={this.handleChange}/>
+             <input value={this.state.subject} type="text" name="subject" onChange={this.handleChange}/>
          <button type="submit">Update Class</button>
-        <p>{this.props.match.params.id}</p>
      </form>
+     </div>
     )
     }
 
